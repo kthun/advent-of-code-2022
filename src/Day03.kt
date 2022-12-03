@@ -1,8 +1,8 @@
 fun main() {
 
-    fun characterValue(character: Char): Int = when {
-        character.isLowerCase() -> character.code - 'a'.code + 1
-        else -> character.code - 'A'.code + 27
+    fun Char.characterValue(): Int = when {
+        isLowerCase() -> code - 'a'.code + 1
+        else -> code - 'A'.code + 27
     }
 
     fun part1(input: List<String>): Int = input.sumOf { line ->
@@ -10,13 +10,13 @@ fun main() {
         val compartmentA = line.substring(0, midPoint)
         val compartmentB = line.substring(midPoint)
         val match = compartmentA.find { it in compartmentB }!!
-        characterValue(match)
+        match.characterValue()
     }
 
     fun part2(input: List<String>): Int =
         input.chunked(3).sumOf { lines ->
             val match = lines[0].find { it in lines[1] && it in lines[2] }!!
-            characterValue(match)
+            match.characterValue()
         }
 
     val testInput = readInput("Day03_test")
