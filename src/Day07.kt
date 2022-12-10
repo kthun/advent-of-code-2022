@@ -2,7 +2,7 @@ class Folder(
     val name: String,
     val subFolders: MutableMap<String, Folder> = mutableMapOf(),
     var parent: Folder? = null,
-    var files: MutableList<File> = mutableListOf()
+    var myFiles: MutableList<MyFile> = mutableListOf()
 ) {
     fun addSubFolder(folder: Folder) {
         subFolders[folder.name] = folder
@@ -10,7 +10,7 @@ class Folder(
         folders[folder.fullPath()] = folder
     }
     fun size(): Int {
-        return files.sumOf { it.size } + subFolders.values.sumOf { it.size() }
+        return myFiles.sumOf { it.size } + subFolders.values.sumOf { it.size() }
     }
     fun fullPath(): String {
         return if (parent == null) {
@@ -28,7 +28,7 @@ class Folder(
         for (folder in subFolders.values.sortedBy { it.name }) {
             sb.append(folder.toString(indent + 2))
         }
-        for (file in files.sortedBy { it.name }) {
+        for (file in myFiles.sortedBy { it.name }) {
             sb.append(" ".repeat(indent + 2))
             sb.append("- ${file.name} (file, size=${file.size})")
             sb.appendLine()
@@ -41,7 +41,7 @@ class Folder(
 
 var folders = mutableMapOf<String, Folder>()
 
-data class File(val name: String, val size: Int)
+data class MyFile(val name: String, val size: Int)
 
 fun main() {
 
@@ -66,7 +66,7 @@ fun main() {
 
                 else -> {
                     val (fileSizeString, fileName) = line.split(" ")
-                    currentDir.files.add(File(fileName, fileSizeString.toInt()))
+                    currentDir.myFiles.add(MyFile(fileName, fileSizeString.toInt()))
                 }
             }
         }
